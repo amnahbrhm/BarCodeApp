@@ -6,7 +6,7 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { NavigationContainer } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useTheme } from "react-native-paper";
-import { Colors } from './constants/styles';
+import { Colors } from "./constants/styles";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -16,7 +16,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="HomeRoutes"
+        initialRouteName="Settings"
         activeColor={Colors.primary800}
         inactiveColor={Colors.primary500}
         // activeBackgroundColor={Colors.primary200}
@@ -36,10 +36,11 @@ export default function App() {
           name="HomeRoutes"
           component={HomeRoutes}
           options={{
+            tabBarStyle: { display: "none" },
             tabBarLabel: "Home",
             tabBarIcon: ({ color }) => (
               <Ionicons name="md-home" color={color} size={26} />
-            ),
+            )
           }}
         />
         <Tab.Screen

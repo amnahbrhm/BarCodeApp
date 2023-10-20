@@ -19,7 +19,8 @@ function HomeScreen({ navigation }) {
     });
   }, []);
   function openFormModal() {
-    console.log("open modal");
+    navigation.navigate('HomeRoutes', { screen: 'AddItemScreen' })
+    // console.log("open modal");
   }
   return (
     <>
