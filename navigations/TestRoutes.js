@@ -9,8 +9,9 @@ export default function TestRoutes() {
       <Stack.Screen
         name="testScreen"
         component={TestScreen}
+        
         options={{
-          title: "الملف الشخصي",
+          title: "الملف الشخصي"
         }}
       />
     </Stack.Navigator>

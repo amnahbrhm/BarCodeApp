@@ -2,13 +2,17 @@ import { StyleSheet, Button, Text, View } from "react-native";
 import HomeRoutes from "./navigations/HomeRoutes";
 import TestRoutes from "./navigations/TestRoutes";
 import SettingsRoutes from "./navigations/SettingsRoutes";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+
 import { NavigationContainer } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useTheme } from "react-native-paper";
 import { Colors } from "./constants/styles";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-const Tab = createMaterialBottomTabNavigator();
+
+
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   const theme = useTheme();
@@ -20,13 +24,14 @@ export default function App() {
         activeColor={Colors.primary800}
         inactiveColor={Colors.primary500}
         // activeBackgroundColor={Colors.primary200}
-        barStyle={{ backgroundColor: Colors.accent200 }}
+        barStyle={{ backgroundColor: Colors.accent200}}
       >
         <Tab.Screen
           name="Settings"
           component={SettingsRoutes}
           options={{
-            tabBarLabel: "Settings",
+            headerShown:false,
+            tabBarLabel: "الاعدادات",
             tabBarIcon: ({ color }) => (
               <Ionicons name="md-settings" color={color} size={26} />
             ),
@@ -35,19 +40,22 @@ export default function App() {
         <Tab.Screen
           name="HomeRoutes"
           component={HomeRoutes}
+          // barStyle={{ display: 'none' }}
           options={{
-            tabBarStyle: { display: "none" },
-            tabBarLabel: "Home",
+            // tabBarStyle: { display: "none" },
+            headerShown:false,
+            tabBarLabel: "الصفحة الرئيسية",
             tabBarIcon: ({ color }) => (
               <Ionicons name="md-home" color={color} size={26} />
-            )
+            ),
           }}
         />
         <Tab.Screen
           name="TestRoutes"
           component={TestRoutes}
           options={{
-            tabBarLabel: "Profile",
+            headerShown:false,
+            tabBarLabel: "الملف الشخصي",
             tabBarIcon: ({ color }) => (
               <Ionicons name="person" color={color} size={26} />
             ),

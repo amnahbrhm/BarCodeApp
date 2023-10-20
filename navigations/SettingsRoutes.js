@@ -10,7 +10,7 @@ export default function SettingsRoutes() {
         name="SettingsScreen"
         component={BarCodeScanScreen}
         options={{
-          title: "Settings",
+          title: "الاعدادات"
         }}
       />
     </Stack.Navigator>
