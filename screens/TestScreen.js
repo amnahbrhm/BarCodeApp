@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 function TestScreen() {
   return (
       <View>
-        <Text >عرض القوائم </Text>
+        {/* <Text >عرض القوائم </Text> */}
       </View>
   );
 }

@@ -5,13 +5,25 @@ const Stack = createStackNavigator();
 
 export default function TestRoutes() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        // cardStyle: {
+        //   backgroundColor: "red",
+        // },
+        headerBackground: () => {
+          color: "#ECECFD";
+        },
+        headerTintColor: "#14134A",
+      }}
+    >
       <Stack.Screen
         name="testScreen"
         component={TestScreen}
-        
         options={{
-          title: "الملف الشخصي"
+          title: "الملف الشخصي",
+          headerStyle: {
+            backgroundColor: "red",
+          },
         }}
       />
     </Stack.Navigator>

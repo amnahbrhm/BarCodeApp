@@ -8,10 +8,10 @@ function HomeScreen({ navigation }) {
     navigation.setOptions({
       headerRight: () => {
         return (
-          <PrimaryButton onPress={openFormModal} style={{width: 100}}>
+          <PrimaryButton onPress={openFormModal} style={{width: 60}}>
             <View style={styles.buttonTitleContiner}>
-              <Text style={styles.buttonTitleText}>منتج جديد</Text>
-              <Ionicons name="add-circle-outline" size={12} color="white" />
+              {/* <Text style={styles.buttonTitleText}>منتج جديد</Text> */}
+              <Ionicons name="add-circle-outline" size={22} color="#7B1941" />
             </View>
           </PrimaryButton>
         );
@@ -25,10 +25,10 @@ function HomeScreen({ navigation }) {
   return (
     <>
       <View style={styles.headerContiner}>
-        <Text style={GeneralStyle.title}>عرض القوائم </Text>
+        {/* <Text style={GeneralStyle.title}>عرض القوائم </Text> */}
       </View>
       <View style={styles.contentContiner}>
-        <Text>العرض هنا </Text>
+        {/* <Text>العرض هنا </Text> */}
     </View>
     </>
   );
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     // padding: 3
   },
   buttonTitleText: {
-    fontSize: 12,
+    fontSize: 22,
     color: "white",
     paddingHorizontal: Padding.sm
   },

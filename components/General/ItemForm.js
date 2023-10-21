@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 import Input from "./Input";
 import Button from "../UI/Button";
+import { Colors } from "../../constants/styles";
 // import { getFormattedDate } from "../../util/date";
 // import { GlobalStyles } from "../../constants/styles";
 
@@ -67,11 +68,11 @@ function ExpenseForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
 
   return (
     <View style={styles.form}>
-      <Text style={styles.title}>Your Expense</Text>
+      <Text style={styles.title}>إضافة منتج جديد</Text>
       <View style={styles.inputsRow}>
         <Input
           style={styles.rowInput}
-          label="Amount"
+          label="الباركود"
           invalid={!inputs.amount.isValid}
           textInputConfig={{
             keyboardType: "decimal-pad",
@@ -81,7 +82,30 @@ function ExpenseForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
         />
         <Input
           style={styles.rowInput}
-          label="Date"
+          label=" الاسم"
+          invalid={!inputs.amount.isValid}
+          textInputConfig={{
+            keyboardType: "decimal-pad",
+            onChangeText: inputChangedHandler.bind(this, "amount"),
+            value: inputs.amount.value,
+          }}
+        />
+      </View>
+      <View style={styles.inputsRow}>
+        <Input
+          style={styles.rowInput}
+          label="تاريخ الفتح"
+          invalid={!inputs.date.isValid}
+          textInputConfig={{
+            placeholder: "YYYY-MM-DD",
+            maxLength: 10,
+            onChangeText: inputChangedHandler.bind(this, "date"),
+            value: inputs.date.value,
+          }}
+        />
+        <Input
+          style={styles.rowInput}
+          label="تاريخ الانتهاء"
           invalid={!inputs.date.isValid}
           textInputConfig={{
             placeholder: "YYYY-MM-DD",
@@ -91,28 +115,16 @@ function ExpenseForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
           }}
         />
       </View>
-      <Input
-        label="Description"
-        invalid={!inputs.description.isValid}
-        textInputConfig={{
-          multiline: true,
-          // autoCapitalize: 'none'
-          // autoCorrect: false // default is true
-          onChangeText: inputChangedHandler.bind(this, "description"),
-          value: inputs.description.value,
-        }}
-      />
       {formIsInvalid && (
-        <Text style={styles.errorText}>
-          Invalid input values - please check your entered data!
-        </Text>
+        <Text style={styles.errorText}>يرجى التأكد من البيانات المدخلة</Text>
       )}
       <View style={styles.buttons}>
         <Button style={styles.button} mode="flat" onPress={onCancel}>
-          Cancel
+          الغاء
         </Button>
         <Button style={styles.button} onPress={submitHandler}>
-          {submitButtonLabel}
+          {/* {submitButtonLabel} */}
+          حفظ
         </Button>
       </View>
     </View>
@@ -128,7 +140,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "white",
+    color: Colors.Murrey600,
     marginVertical: 24,
     textAlign: "center",
   },
@@ -141,13 +153,14 @@ const styles = StyleSheet.create({
   },
   errorText: {
     textAlign: "center",
-    color: 'red',
+    color: "red",
     margin: 8,
   },
   buttons: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    paddingTop: 18,
   },
   button: {
     minWidth: 120,

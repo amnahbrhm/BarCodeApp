@@ -5,12 +5,23 @@ const Stack = createStackNavigator();
 
 export default function SettingsRoutes() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        // cardStyle: {
+        //   backgroundColor: "red",
+        // },
+        headerBackground: () => {
+          color: "#ECECFD";
+        },
+        headerTintColor: "#14134A",
+
+      }}
+    >
       <Stack.Screen
         name="SettingsScreen"
         component={BarCodeScanScreen}
         options={{
-          title: "الاعدادات"
+          title: "الاعدادات",
         }}
       />
     </Stack.Navigator>
