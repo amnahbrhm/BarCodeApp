@@ -1,13 +1,24 @@
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-
+import { StyleSheet, Modal, Text, View, Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import Input from "./Input";
+import BarCodeModal from "./BarCodeModal";
+import InputIcon from "./InputIcon";
 import Button from "../UI/Button";
 import { Colors } from "../../constants/styles";
 // import { getFormattedDate } from "../../util/date";
 // import { GlobalStyles } from "../../constants/styles";
 
-function ExpenseForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
+function ExpenseForm({
+  submitButtonLabel,
+  onScan,
+  onCancel,
+  onSubmit,
+  defaultValues,
+}) {
+  const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+
   const [inputs, setInputs] = useState({
     amount: {
       value: defaultValues ? defaultValues.amount.toString() : "",
@@ -66,68 +77,86 @@ function ExpenseForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
     !inputs.date.isValid ||
     !inputs.description.isValid;
 
+  function scanBarcode() {
+    console.log("barc");
+    setModalVisible(true);
+    // navigation.navigate('HomeRoutes', { screen: 'ScanScreen' })
+  }
+  function handleText(inputIdentifier, enteredValue) {
+    console.log("text", inputIdentifier, enteredValue);
+  }
   return (
-    <View style={styles.form}>
-      <Text style={styles.title}>إضافة منتج جديد</Text>
-      <View style={styles.inputsRow}>
-        <Input
-          style={styles.rowInput}
-          label="الباركود"
-          invalid={!inputs.amount.isValid}
-          textInputConfig={{
-            keyboardType: "decimal-pad",
-            onChangeText: inputChangedHandler.bind(this, "amount"),
-            value: inputs.amount.value,
-          }}
-        />
-        <Input
-          style={styles.rowInput}
-          label=" الاسم"
-          invalid={!inputs.amount.isValid}
-          textInputConfig={{
-            keyboardType: "decimal-pad",
-            onChangeText: inputChangedHandler.bind(this, "amount"),
-            value: inputs.amount.value,
-          }}
-        />
+    <>
+      <View style={styles.form}>
+        <Text style={styles.title}>إضافة منتج جديد</Text>
+        <View style={styles.inputsRow}>
+          <InputIcon
+            style={styles.rowInput}
+            label="الباركود"
+            invalid={!inputs.amount.isValid}
+            textInputConfig={{
+              keyboardType: "decimal-pad",
+              onChangeText: inputChangedHandler.bind(this, "amount"),
+              value: inputs.amount.value,
+            }}
+            onPress={scanBarcode}
+          />
+          <Input
+            style={styles.rowInput}
+            label=" الاسم"
+            invalid={!inputs.amount.isValid}
+            textInputConfig={{
+              keyboardType: "decimal-pad",
+              onChangeText: inputChangedHandler.bind(this, "amount"),
+              value: inputs.amount.value,
+            }}
+          />
+        </View>
+        <View style={styles.inputsRow}>
+          <Input
+            style={styles.rowInput}
+            label="تاريخ الفتح"
+            invalid={!inputs.date.isValid}
+            textInputConfig={{
+              placeholder: "YYYY-MM-DD",
+              maxLength: 10,
+              onChangeText: inputChangedHandler.bind(this, "date"),
+              value: inputs.date.value,
+            }}
+          />
+          <Input
+            style={styles.rowInput}
+            label="تاريخ الانتهاء"
+            invalid={!inputs.date.isValid}
+            textInputConfig={{
+              placeholder: "YYYY-MM-DD",
+              maxLength: 10,
+              onChangeText: inputChangedHandler.bind(this, "date"),
+              value: inputs.date.value,
+            }}
+          />
+        </View>
+        {formIsInvalid && (
+          <Text style={styles.errorText}>يرجى التأكد من البيانات المدخلة</Text>
+        )}
+        <View style={styles.buttons}>
+          <Button style={styles.button} mode="flat" onPress={onCancel}>
+            الغاء
+          </Button>
+          <Button style={styles.button} onPress={submitHandler}>
+            {/* {submitButtonLabel} */}
+            حفظ
+          </Button>
+        </View>
       </View>
-      <View style={styles.inputsRow}>
-        <Input
-          style={styles.rowInput}
-          label="تاريخ الفتح"
-          invalid={!inputs.date.isValid}
-          textInputConfig={{
-            placeholder: "YYYY-MM-DD",
-            maxLength: 10,
-            onChangeText: inputChangedHandler.bind(this, "date"),
-            value: inputs.date.value,
-          }}
-        />
-        <Input
-          style={styles.rowInput}
-          label="تاريخ الانتهاء"
-          invalid={!inputs.date.isValid}
-          textInputConfig={{
-            placeholder: "YYYY-MM-DD",
-            maxLength: 10,
-            onChangeText: inputChangedHandler.bind(this, "date"),
-            value: inputs.date.value,
-          }}
-        />
-      </View>
-      {formIsInvalid && (
-        <Text style={styles.errorText}>يرجى التأكد من البيانات المدخلة</Text>
-      )}
-      <View style={styles.buttons}>
-        <Button style={styles.button} mode="flat" onPress={onCancel}>
-          الغاء
-        </Button>
-        <Button style={styles.button} onPress={submitHandler}>
-          {/* {submitButtonLabel} */}
-          حفظ
-        </Button>
-      </View>
-    </View>
+      <BarCodeModal
+        barcodeText={(text) => handleText("barcode", text)}
+        visible={modalVisible}
+        change={() => {
+          setModalVisible(!modalVisible);
+        }}
+      />
+    </>
   );
 }
 

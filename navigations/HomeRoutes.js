@@ -1,5 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../screens/home/HomeScreen";
+import BarCodeScanScreen from "../screens/BarCodeScanScreen";
 import ExpenseForm from "../components/General/ItemForm";
 import { useLayoutEffect } from "react";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
@@ -40,9 +41,15 @@ export default function HomeRoutes({ navigation, route }) {
           color: "#ECECFD";
         },
         headerTintColor: "#14134A",
-
       }}
     >
+      <Stack.Screen
+        name="ScanScreen"
+        component={BarCodeScanScreen}
+        options={{
+          title: "الماسح الضوئي",
+        }}
+      />
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
