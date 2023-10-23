@@ -2,19 +2,19 @@ import ItemForm from "../../components/General/ItemForm";
 import { Animated } from "react-native";
 
 function NewItemScreen({ navigation }) {
-  const av = new Animated.Value(0);
-  av.addListener(() => {
-    return;
-  });
-  function openScanBarcode() {
-    // navigation.navigate('HomeRoutes', { screen: 'ScanScreen' })
-    console.log("open scan");
+  // const av = new Animated.Value(0);
+  // av.addListener(() => {
+  //   return;
+  // });
+  function submit(data) {
+    console.log(data);
   }
-  return (
-    <>
-      <ItemForm onCancel={() => navigation.goBack()}  />
-    </>
-  );
+  function cancel() {
+    console.log('cancel');
+    navigation.goBack();
+  }
+  return <ItemForm onCancel={cancel} onSubmit={submit} submitButtonLabel={'حفظ'} />
+  
 }
 
 export default NewItemScreen;

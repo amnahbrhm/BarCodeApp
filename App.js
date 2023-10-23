@@ -23,7 +23,7 @@ export default function App() {
       <StatusBar style="dark" />
       <NavigationContainer theme={navTheme}>
         <Tab.Navigator
-          initialRouteName="Settings"
+          initialRouteName="HomeRoutes"
           activeColor={Colors.primary800}
           inactiveColor={Colors.primary500}
           screenOptions={({ route }) => ({
@@ -48,7 +48,7 @@ export default function App() {
             headerShown: false,
           })}
         >
-          <Tab.Screen
+          {/* <Tab.Screen
             name="Settings"
             component={SettingsRoutes}
             options={{
@@ -70,7 +70,7 @@ export default function App() {
                 </View>
               ),
             }}
-          />
+          /> */}
           <Tab.Screen
             name="TestRoutes"
             component={TestRoutes}

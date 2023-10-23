@@ -2,10 +2,10 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "../../constants/styles";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-function InputIcon({ label, invalid, style, textInputConfig, onPress }) {
-  const inputStyles = [styles.input];
+function InputIcon({ label, invalid, style, textInputConfig, onPress, icon }) {
+  const searchSectionStyles = [styles.searchSection];
   if (invalid) {
-    inputStyles.push(styles.invalidInput);
+    searchSectionStyles.push(styles.invalidInput);
   }
 
   return (
@@ -13,9 +13,9 @@ function InputIcon({ label, invalid, style, textInputConfig, onPress }) {
       <Text style={[styles.label, invalid && styles.invalidLabel]}>
         {label}
       </Text>
-      <View style={styles.searchSection}>
+      <View style={searchSectionStyles}>
           <Icon
-        name="barcode-scan"
+        name={icon}
         size={20}
         color="black"
         onPress={onPress}

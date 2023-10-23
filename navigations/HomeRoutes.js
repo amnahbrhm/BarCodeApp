@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../screens/home/HomeScreen";
 import BarCodeScanScreen from "../screens/BarCodeScanScreen";
-import ExpenseForm from "../components/General/ItemForm";
+import NewItemScreen from "../screens/home/NewItemScreen";
 import { useLayoutEffect } from "react";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { Platform } from "react-native";
@@ -59,7 +59,7 @@ export default function HomeRoutes({ navigation, route }) {
       />
       <Stack.Screen
         name="AddItemScreen"
-        component={ExpenseForm}
+        component={NewItemScreen}
         options={{
           title: "اضافة منتج ",
           presentation: "modal",

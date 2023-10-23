@@ -1,11 +1,12 @@
 import { Modal, StyleSheet, Text, Button, View } from "react-native";
 import { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import { Colors } from "../../constants/styles";
 
 function BarCodeModal({ visible, change, barcodeText }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [text, setText] = useState("Not yet scanned");
+  const [text, setText] = useState("لم يتم المسح الضوئي");
 
   const askForCameraPermission = () => {
     (async () => {
@@ -25,9 +26,9 @@ function BarCodeModal({ visible, change, barcodeText }) {
     setText(data);
     // console.log("Type: " + type + "\nData: " + data);
   };
-  function setBarText(){
+  function setBarText() {
     barcodeText(text);
-    change()
+    change();
   }
 
   // Check permissions and return the screens
@@ -39,8 +40,10 @@ function BarCodeModal({ visible, change, barcodeText }) {
         visible={visible}
         onRequestClose={change}
       >
-        <View style={styles.modalView}>
-          <Text>Requesting for camera permission</Text>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text>طلب السماح للوصول للكاميرا</Text>
+          </View>
         </View>
       </Modal>
     );
@@ -53,12 +56,14 @@ function BarCodeModal({ visible, change, barcodeText }) {
         visible={visible}
         onRequestClose={change}
       >
-        <View style={styles.modalView}>
-          <Text style={{ margin: 10 }}>No access to camera</Text>
-          <Button
-            title={"Allow Camera"}
-            onPress={() => askForCameraPermission}
-          />
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={{ margin: 10 }}>No access to camera</Text>
+            <Button
+              title={"السماح للكاميرا"}
+              onPress={() => askForCameraPermission}
+            />
+          </View>
         </View>
       </Modal>
     );
@@ -71,30 +76,31 @@ function BarCodeModal({ visible, change, barcodeText }) {
       onRequestClose={change}
     >
       <View style={styles.centeredView}>
+        {/* <View style={styles.modalView}> */}
+        <View style={styles.barcodebox}>
+          <BarCodeScanner
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={{ height: 400, width: 400 }}
+          />
+        </View>
         <View style={styles.modalView}>
-          <View style={styles.barcodebox}>
-            <BarCodeScanner
-              onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-              style={{ height: 400, width: 400 }}
-            />
-          </View>
           <Text style={styles.maintext}>{text}</Text>
+        </View>
+        <View style={styles.buttonsView}>
+          <Button title={"الغاء"} onPress={change} color="black" />
 
           {scanned && (
-            <View>
+            <>
+              <Button title={"مضبوط"} onPress={setBarText} size={12} color="black" />
               <Button
                 title={"امسح مره اخرى"}
                 onPress={() => setScanned(false)}
-                color="tomato"
+                color="black"
               />
-              <Button
-                title={"مضبوط"}
-                onPress={setBarText}
-                color="tomato"
-              />
-            </View>
+            </>
           )}
         </View>
+        {/* </View> */}
       </View>
       {/* <View style={styles.centeredView}>
         <View style={styles.modalView}>
@@ -115,6 +121,7 @@ export default BarCodeModal;
 const styles = StyleSheet.create({
   maintext: {
     fontSize: 16,
+    color: "white",
     margin: 20,
   },
   barcodebox: {
@@ -123,7 +130,9 @@ const styles = StyleSheet.create({
     height: 300,
     width: 300,
     overflow: "hidden",
-    borderRadius: 30,
+    // borderRadius: 30,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     backgroundColor: "tomato",
   },
   centeredView: {
@@ -133,19 +142,40 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
+    height: 70,
+    width: 300,
+    // margin: 20,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    justifyContent: "center",
+    backgroundColor: Colors.Blush300,
+    // borderBottomRightRadius: 20,
+    // borderBottomLeftRadius: 20,
+    // padding: 35,
+    // alignItems: "center",
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 4,
+    // elevation: 5,
+  },
+  buttonsView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
+    width: 300,
+    // margin: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.Lavender100,
+    borderColor: Colors.Blush300,
+    borderWidth: 1,
+    // borderStartEndWidth: 1,
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
   },
   button: {
     borderRadius: 20,

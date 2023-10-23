@@ -1,35 +1,30 @@
 import { useState } from "react";
-import { StyleSheet, Modal, Text, View, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { StyleSheet, Text, View } from "react-native";
 import Input from "./Input";
 import BarCodeModal from "./BarCodeModal";
 import InputIcon from "./InputIcon";
 import Button from "../UI/Button";
 import { Colors } from "../../constants/styles";
-// import { getFormattedDate } from "../../util/date";
 // import { GlobalStyles } from "../../constants/styles";
 
-function ExpenseForm({
-  submitButtonLabel,
-  onScan,
-  onCancel,
-  onSubmit,
-  defaultValues,
-}) {
-  const navigation = useNavigation();
+function ItemForm({ onSubmit, submitButtonLabel, onCancel, defaultValues }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const [inputs, setInputs] = useState({
-    amount: {
-      value: defaultValues ? defaultValues.amount.toString() : "",
+    name: {
+      value: defaultValues ? defaultValues.name.toString() : "",
       isValid: true,
     },
-    date: {
-      value: defaultValues ? getFormattedDate(defaultValues.date) : "",
+    barcode: {
+      value: defaultValues ?  defaultValues.barcode : "",
       isValid: true,
     },
-    description: {
-      value: defaultValues ? defaultValues.description : "",
+    dateStart: {
+      value: defaultValues ? getFormattedDate(defaultValues.dateStart) : "",
+      isValid: true,
+    },
+    dateEnd: {
+      value: defaultValues ? getFormattedDate(defaultValues.dateEnd) : "",
       isValid: true,
     },
   });
@@ -44,38 +39,51 @@ function ExpenseForm({
   }
 
   function submitHandler() {
-    const expenseData = {
-      amount: +inputs.amount.value,
-      date: new Date(inputs.date.value),
-      description: inputs.description.value,
+    const formData = {
+      name: inputs.name.value,
+      dateStart: new Date(inputs.dateStart.value),
+      dateEnd: new Date(inputs.dateEnd.value),
+      barcode: inputs.barcode.value,
     };
 
-    const amountIsValid = !isNaN(expenseData.amount) && expenseData.amount > 0;
-    const dateIsValid = expenseData.date.toString() !== "Invalid Date";
-    const descriptionIsValid = expenseData.description.trim().length > 0;
+    const dateStartIsValid = formData.dateStart.toString() !== "Invalid Date";
+    const dateEndIsValid = formData.dateEnd.toString() !== "Invalid Date";
+    const namesIsValid = formData.name.trim().length > 0;
+    const barcodeIsValid = formData.barcode.trim().length > 0;
+    console.log(barcodeIsValid, 'barcodeIsValid')
 
-    if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
+    if (
+      !dateStartIsValid ||
+      !dateEndIsValid ||
+      !namesIsValid ||
+      !barcodeIsValid
+    ) {
       // Alert.alert('Invalid input', 'Please check your input values');
       setInputs((curInputs) => {
         return {
-          amount: { value: curInputs.amount.value, isValid: amountIsValid },
-          date: { value: curInputs.date.value, isValid: dateIsValid },
-          description: {
-            value: curInputs.description.value,
-            isValid: descriptionIsValid,
+          name: { value: curInputs.name.value, isValid: namesIsValid },
+          dateStart: {
+            value: curInputs.dateStart.value,
+            isValid: dateStartIsValid,
+          },
+          dateEnd: { value: curInputs.dateEnd.value, isValid: dateEndIsValid },
+          barcode: {
+            value: curInputs.barcode.value,
+            isValid: barcodeIsValid,
           },
         };
       });
       return;
     }
 
-    onSubmit(expenseData);
+    onSubmit(formData);
   }
 
   const formIsInvalid =
-    !inputs.amount.isValid ||
-    !inputs.date.isValid ||
-    !inputs.description.isValid;
+    !inputs.name.isValid ||
+    !inputs.dateStart.isValid ||
+    !inputs.dateEnd.isValid ||
+    !inputs.barcode.isValid;
 
   function scanBarcode() {
     console.log("barc");
@@ -93,22 +101,23 @@ function ExpenseForm({
           <InputIcon
             style={styles.rowInput}
             label="الباركود"
-            invalid={!inputs.amount.isValid}
+            icon="barcode-scan"
+            invalid={!inputs.barcode.isValid}
             textInputConfig={{
               keyboardType: "decimal-pad",
-              onChangeText: inputChangedHandler.bind(this, "amount"),
-              value: inputs.amount.value,
+              onChangeText: inputChangedHandler.bind(this, "barcode"),
+              value: inputs.barcode.value,
             }}
             onPress={scanBarcode}
           />
           <Input
             style={styles.rowInput}
             label=" الاسم"
-            invalid={!inputs.amount.isValid}
+            invalid={!inputs.name.isValid}
             textInputConfig={{
               keyboardType: "decimal-pad",
-              onChangeText: inputChangedHandler.bind(this, "amount"),
-              value: inputs.amount.value,
+              onChangeText: inputChangedHandler.bind(this, "name"),
+              value: inputs.name.value,
             }}
           />
         </View>
@@ -116,23 +125,23 @@ function ExpenseForm({
           <Input
             style={styles.rowInput}
             label="تاريخ الفتح"
-            invalid={!inputs.date.isValid}
+            invalid={!inputs.dateStart.isValid}
             textInputConfig={{
               placeholder: "YYYY-MM-DD",
               maxLength: 10,
-              onChangeText: inputChangedHandler.bind(this, "date"),
-              value: inputs.date.value,
+              onChangeText: inputChangedHandler.bind(this, "dateStart"),
+              value: inputs.dateStart.value,
             }}
           />
           <Input
             style={styles.rowInput}
             label="تاريخ الانتهاء"
-            invalid={!inputs.date.isValid}
+            invalid={!inputs.dateEnd.isValid}
             textInputConfig={{
               placeholder: "YYYY-MM-DD",
               maxLength: 10,
-              onChangeText: inputChangedHandler.bind(this, "date"),
-              value: inputs.date.value,
+              onChangeText: inputChangedHandler.bind(this, "dateEnd"),
+              value: inputs.dateEnd.value,
             }}
           />
         </View>
@@ -144,13 +153,13 @@ function ExpenseForm({
             الغاء
           </Button>
           <Button style={styles.button} onPress={submitHandler}>
-            {/* {submitButtonLabel} */}
-            حفظ
+            {submitButtonLabel}
+            {/* حفظ */}
           </Button>
         </View>
       </View>
       <BarCodeModal
-        barcodeText={(text) => handleText("barcode", text)}
+        barcodeText={(text) => inputChangedHandler("barcode", text)}
         visible={modalVisible}
         change={() => {
           setModalVisible(!modalVisible);
@@ -160,7 +169,7 @@ function ExpenseForm({
   );
 }
 
-export default ExpenseForm;
+export default ItemForm;
 
 const styles = StyleSheet.create({
   form: {
